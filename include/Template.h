@@ -3,14 +3,29 @@
 #include <cmath>
 #include<string>
 #include <map>
+#include <fstream>
+#include <list>
+#include <queue>
+#include <regex>
+#include <sstream>
 using namespace std;
  
 const map<char, int> Table = { {'I',1},{'V',5},{'X',10},{'L',50},{'C',100},{'D',500},{'M',1000} };
 const map<int, string>Table3 = { {1,"I"},{5,"V"},{10,"X"},{50,"L"},{100,"C"},{500,"D"},{1000,"M"},{900,"CM"},{90,"XC"},{40,"XL"},{9,"IX"},{4,"IV"} };
+
+list<string>files_strings;
 void MakeNStr(int n, const string& ch,string& res)
 {
 	for (int i = 0; i < n; i++)res += ch;
 	
+}
+bool Is_Latina(const string& _word)
+{
+	for (auto i : Table)
+	{
+		if (_word[0] == i.first) return 1;
+	}
+	return 0;
 }
 class Arabia
 {
@@ -28,6 +43,12 @@ public:
 	int get_data()const
 	{
 		return data;
+	}
+	string get_data_string()
+	{
+		stringstream ss;
+		ss << data;
+		return ss.str();
 	}
 	
 	private:
@@ -92,4 +113,60 @@ public:
 	{
 		return((this->to_Latina(_arabia)) == _latina);
 	}
+};
+
+class File
+{
+public:
+	File(const string& _in):file_name(_in) {}
+	void Correction()
+	{
+		ifstream in(file_name);
+		queue<string> buf;
+		if (!in)return;
+		while (!in.eof())
+		{
+			string line, word;
+			getline(in, line);
+			int total = line.size();
+			int count = 0;
+			Converter c;
+			istringstream ss(move(line));
+			while (count < total) {
+				ss >> word;
+				count +=( word.size()+1);
+				if (Is_Latina(word))
+				{
+					Latina _c(word);
+					buf.push(move((c.to_Arabia(_c)).get_data_string()));
+				}
+				else
+				{
+					buf.push(move(word));
+				}
+			}
+			buf.push("\n");
+
+		}
+		in.close();
+		ofstream out(file_name);
+		while (!buf.empty()) {
+			if (buf.front() != "\n") {
+				out << buf.front() << " ";
+				buf.pop();
+
+			}
+			else
+			{
+				out << buf.front();
+				buf.pop();
+			}
+		}
+
+	}
+
+
+private:
+	
+	const string file_name;
 };
