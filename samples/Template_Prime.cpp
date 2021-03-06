@@ -9,7 +9,10 @@ using namespace std;
 
 int main()
 {
-	return 0;
+	Cycle_List<int>A(8);
+	cout << A.Check_with_reverse();
+	cout << A.RabbitAndTurtle();
+	cout << A.find_cycle_start().second;
 }
 	
 
