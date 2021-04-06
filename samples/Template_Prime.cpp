@@ -9,8 +9,15 @@ using namespace std;
 
 int main()
 {
-	return 0;
-}
+	char s[] = "My poshli na plaz. Love u.";
+	char d[] = "Sanitary fuck u.";
+	{
+		Text s2(d);
+		cout << s2 << "\n";
+	}
+	Text ss(&s[0]);
+	cout << ss<< endl;
 	
+}  
 
 
