@@ -9,15 +9,25 @@ using namespace std;
 
 int main()
 {
-	char s[] = "My poshli na plaz. Love u.";
-	char d[] = "Sanitary fuck u.";
+	string s1="My poshli na plaz. Love u.";
+	string s22="Sanitary fuck u.";
 	{
-		Text s2(d);
+		Text s2(s22);
 		cout << s2 << "\n";
 	}
-	Text ss(&s[0]);
+ Text ss(s22);
 	cout << ss<< endl;
+	//Text sss;
+	//sss += move(ss);
+	//cin >> sss;
+	//cout << sss;
+	ifstream s("C:\\Users\\George\\Desktop\\s.txt");
+
+	Text q;
 	
+	s>>q;
+
+	cout << q;
 }  
 
 

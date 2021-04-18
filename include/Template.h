@@ -3,9 +3,11 @@
 #include <cmath>
 #include <cstring>
 #include <vector>
+#include <fstream>
+#include <string>
 using namespace std;
 
-char* strf(char* s);
+size_t strf(const string& s, size_t sp);
 
 
 class TTextNode
@@ -26,7 +28,7 @@ public:
 		c = rhs.c;
 		level = rhs.level;
 	}
-	TTextNode(char* s, int l = 0) :next(nullptr), level(l), down(nullptr)
+	TTextNode(const string& s, int l = 0) :next(nullptr), level(l), down(nullptr)
 	{
 		if (l == 0)
 		{
@@ -37,25 +39,25 @@ public:
 		if (l == 1)
 		{
 			down = new TTextNode(s, l + 1);
-			if (TTextNode::get_sum_length() < strlen(s))next = new TTextNode(s, l);
+			if (TTextNode::get_sum_length() < s.size())next = new TTextNode(s, l);
 		}
 		if (l == 2)
 		{
 			down = new TTextNode(s, l + 1);
-			if ((*(s+TTextNode::get_sum_length()-1) != '.')&&
-				(*(s + TTextNode::get_sum_length() - 1) != '!')&&
-				(*(s + TTextNode::get_sum_length() - 1) != '?'))next = new TTextNode(s, l);
+			if ((s[TTextNode::get_sum_length()-1] != '.')&&
+				(s[TTextNode::get_sum_length() - 1] != '!')&&
+				(s[TTextNode::get_sum_length() - 1] != '?'))next = new TTextNode(s, l);
 		}
 		if (l == 3)
 		{
-			this->c = *(s + TTextNode::get_sum_length());
+			this->c = s[TTextNode::get_sum_length()];
 			this->down = nullptr;
 			TTextNode* ptr = this;
 			TTextNode::add(1);
-			char* j = strf(s + TTextNode::get_sum_length());
-			for (char* i = s + TTextNode::get_sum_length(); i != j; i++)
+			size_t j = strf(s,TTextNode::get_sum_length());
+			for (size_t i= TTextNode::get_sum_length(); i != j; i++)
 			{
-				ptr->next = new TTextNode(3, (*i));
+				ptr->next = new TTextNode(3, s[i]);
 				TTextNode::add(1);
 				ptr = ptr->get_next();
 			}
@@ -241,13 +243,13 @@ void TTextNode::add_or_sub_trash_count(const int & s)
 	 trash_count += s;
 }
 
-char* strf(char* s)
+size_t strf(const string& s, size_t sp)
 {
-	for (int i = 0; i < strlen(s); i++)
+	for (size_t i = sp; i < s.size(); i++)
 	{
-		if ((s[i] == ' ') || (s[i] == '.')||(s[i]=='?')||(s[i]=='!')) return &s[i + 1];
+		if ((s[i] == ' ') || (s[i] == '.')||(s[i]=='?')||(s[i]=='!')) return i + 1;
 	}
-	return s + 1;
+	return sp + 1;
 }
 
 
@@ -255,18 +257,58 @@ class Text
 {
 private:
 	TTextNode text;
+	
+	Text& operator+=(Text& rhs);
+	
 public:
-	Text() {}
-	Text(char* str):text(str,0){}
+	Text():text(0) {}
+	Text(const string& str):text(str,0){}
 	Text(const Text& rhs) :text(rhs.text) {}
 	~Text()
 	{
 		if(text.get_down()!=nullptr) text.checker(text.get_down());
 	}
-
+	bool empty_text()
+	{
+		return(text.get_down() == nullptr);
+	}
 	friend ostream& operator <<(ostream& out, Text& TEXT)
 	{
 		out << TEXT.text;
 		return out;
 	}
+	friend istream& operator >>(istream& in, Text& TEXT)
+	{
+		string line;
+		
+		while (getline(in, line))
+		{
+		
+			TEXT += Text(line);
+		
+		}
+		return in;
+	}
+	
 };
+
+
+Text& Text::operator+=( Text& rhs)
+{
+	
+	if (this->empty_text())
+	{
+		this->text.set_down(rhs.text.get_down());
+		rhs.text.set_down(nullptr);
+		
+		return(*this);
+	}
+	
+	TTextNode* ptr = this->text.get_down();
+	while (ptr->get_next() != nullptr)ptr = ptr->get_next();
+	ptr->set_next(rhs.text.get_down());
+	
+	rhs.text.set_down(nullptr);
+	
+	return(*this);
+}
