@@ -1,37 +1,14 @@
 #include "Template.h"
-
+#include <map>
 #include <gtest.h>
 
-TEST(Template, can_create_T)
+using namespace std;
+TEST(ut, ccut)
 {
-	
+	map<int, int> q;
+	q[0] = 1;
+	EXPECT_EQ(q[0],1);
 }
-
-
-
-TEST(Template, Can_copy_T)
-{
-	
-}
-TEST(Template, s1)
-{
-	
-}
-
-TEST(Template, s2)
-{
-	
-}
-
-TEST(Template, s3)
-{
-	
-}
-TEST(Template, s4)
-{
-	
-}
-
 
 
 
