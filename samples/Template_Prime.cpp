@@ -9,11 +9,11 @@ using namespace std;
 
 int main()
 {
-	sorted_table<int,double> b(4);
-	b.add(1, 2);
-	b.add(3, 4);
-	b.find(3);
-	return 0;
+	AVL_table<int, int>A2(Node<int, int>(-1, 2));
+	for (int i = 0; i < 10; i++)A2.add(i, i + 1);
+	bool f = A2.find(4);
+	A2.erase(4);
+	cout<<(f==A2.find(4));
 }
 	
 
