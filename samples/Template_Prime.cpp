@@ -9,23 +9,24 @@ using namespace std;
 
 int main()
 {
-	string s1="My poshli na plaz. Love u.";
+	string s1="ABCDEF.";
 	string s22="Sanitary fuck u.";
 	{
 		Text s2(s22);
 		cout << s2 << "\n";
 	}
- Text ss(s22);
+ Text ss(s1);
 	cout << ss<< endl;
+	
 	//Text sss;
 	//sss += move(ss);
 	//cin >> sss;
 	//cout << sss;
-	ifstream s("C:\\Users\\George\\Desktop\\s.txt");
-
+	ifstream u("D:\\List-Lab1\\1.txt");
+	
 	Text q;
 	
-	s>>q;
+	u>>q;
 
 	cout << q;
 }  

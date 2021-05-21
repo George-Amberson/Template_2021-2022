@@ -279,7 +279,7 @@ public:
 	}
 	friend istream& operator >>(istream& in, Text& TEXT)
 	{
-		string line;
+		std::string line;
 		
 		while (getline(in, line))
 		{
