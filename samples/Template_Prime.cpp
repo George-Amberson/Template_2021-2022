@@ -4,16 +4,24 @@
 #include <stack>
 #include <string>
 #include <iostream>
-
+#include <fstream>
+#include <ctype.h>
 using namespace std;
 
 int main()
 {
-	AVL_table<int, int>A2(Node<int, int>(-1, 2));
-	for (int i = 0; i < 10; i++)A2.add(i, i + 1);
-	bool f = A2.find(4);
-	A2.erase(4);
-	cout<<(f==A2.find(4));
+	AVL_table<string, int>A2;
+	ifstream f("C:\\Users\\George\\Desktop\\sometext.txt");
+	string w;
+	while (f)
+	{
+		f >> w;
+		if (w.back() == '.') w.erase(w.begin()+w.size()-1);
+		if ((w.front() >= 'A') && (w.front() <= 'Z')) w[0] = tolower(w[0]);
+		A2.add(w, 1);
+	}
+	cout << A2;
+	return 0;
 }
 	
 
